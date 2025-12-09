@@ -1,0 +1,42 @@
+@rendermode InteractiveServer
+
+<div>
+
+    <div class="alert alert-info" role="alert">
+        <h4>@Title</h4>
+    </div>
+
+    @if (ChildSomeContent != null)
+    {
+        <div class="card">
+            <div class="card-body">
+                @ChildSomeContent
+            </div>
+        </div>
+    }
+    @if (ChildContent != null)
+    {
+        <div class="card">
+            <div class="card-body">
+                @ChildContent
+            </div>
+        </div>
+    }
+    <button class="btn btn-danger" @onclick="OnButtonClick"> Click Me</button>
+
+    <_GrandChildComponent> </_GrandChildComponent>
+</div>
+
+@code {
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter]
+    public RenderFragment? ChildSomeContent { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public EventCallback OnButtonClick { get; set; }
+}

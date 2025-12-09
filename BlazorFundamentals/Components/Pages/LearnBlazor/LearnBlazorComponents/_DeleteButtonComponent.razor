@@ -1,0 +1,17 @@
+<input type="button" class="btn btn-danger" value="Delete - @ProductId" @onclick="DeleteItem" />
+
+@code {
+    [Parameter]
+    public int ProductId { get; set; }
+    [Parameter]
+    public string ProductName { get; set; } = "Sample Product";
+
+
+    private async Task DeleteItem()
+    {
+        // Logic to delete the item with ProductId
+        Console.WriteLine($"Delete item with Id: {ProductId}");
+        Console.WriteLine($"Product Name: {ProductName}");
+        await Task.CompletedTask;
+    }
+}

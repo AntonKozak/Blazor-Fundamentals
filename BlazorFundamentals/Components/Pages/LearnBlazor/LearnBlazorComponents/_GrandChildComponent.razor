@@ -1,0 +1,20 @@
+@rendermode InteractiveServer
+
+<div>
+    <div class="alert alert-warning" role="alert">
+        <h4>@MessageForGrandChild</h4>
+    </div>
+
+    <div class="alert alert-success" role="alert">
+        <h4>Your Lucky Number is: @LuckyNumberForGrandChild</h4>
+    </div>
+</div>
+@code {
+
+    [CascadingParameter(Name = "Message")]
+    public string MessageForGrandChild { get; set; } = string.Empty;
+
+    [CascadingParameter(Name = "LuckyNumber_GrandChild")]
+    public string LuckyNumberForGrandChild { get; set; } = string.Empty;
+
+}

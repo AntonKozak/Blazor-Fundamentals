@@ -1,0 +1,35 @@
+@page "/learnblazor/parentComponent"
+@rendermode InteractiveServer
+
+<h3>Parent Component</h3>
+<CascadingValue Value="MessageForGrandChildTemp" Name="Message">
+    <CascadingValue Value="LuckyNumber" Name="LuckyNumber_GrandChild">
+        <_ChildComponent OnButtonClick="ShowMessage" Title="This is parametr from parent component to child">
+
+            <ChildSomeContent>
+                <p>This is content from the parent using RenderFragment
+                    ChildSomeContent.</p>
+            </ChildSomeContent>
+
+            <ChildContent>
+                <p>From the parent using RenderFragment
+                    ChildContent.</p>
+                <p>And other from ChildContent</p>
+            </ChildContent>
+
+        </_ChildComponent>
+    </CascadingValue>
+</CascadingValue>
+<p>@messageText </p>
+
+
+
+@code {
+    private string messageText = "";
+    private string MessageForGrandChildTemp = "Hello from Parent Component to Grand Child Component! I learnd Cascading Parameter";
+    private string LuckyNumber = "777";
+    private void ShowMessage()
+    {
+        messageText = "Button clicked in child component!";
+    }
+}
