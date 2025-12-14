@@ -1,0 +1,52 @@
+@page "/learnRoutning"
+@page "/learnRoutning/{Param1}"
+@page "/learnRoutning/{Param1}/{Param2}"
+@* @page "/learnRoutning/{Param1}/{Param2:int}" *@
+@page "/learnRoutning/catch-all/{*PageParams}"
+
+
+@rendermode InteractiveServer
+@inject NavigationManager _NavigationManager
+
+
+<div>
+    <h1>Routning</h1>
+    <h2>
+        show param1: @Param1
+    </h2>
+    <br />
+    <h2>
+        show param2: @Param2
+    </h2>
+    <br />
+    <h2>
+        show page params: @PageParams
+    </h2>
+    <br />
+    <a href="learnRoutning?Param1=Learn&Param2=Blazor" class="btn btn-primary">To Query Params</a>
+    <button class="btn btn-primary" @onclick="LoadParameters">Load Query Parameters</button>
+
+
+</div>
+
+
+
+@code {
+    [Parameter]
+    public string? Param1 { get; set; }
+    [Parameter]
+    public string? Param2 { get; set; }
+
+    [Parameter]
+    public string? PageParams { get; set; }
+
+
+    private void LoadParameters()
+    {
+        var uri = new Uri(_NavigationManager.Uri);
+        var query = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(uri.Query);
+        Param1 = query["Param1"];
+        Param2 = query["Param2"];
+    }
+
+}

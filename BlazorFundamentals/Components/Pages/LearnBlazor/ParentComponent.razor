@@ -4,7 +4,8 @@
 <h3>Parent Component</h3>
 <CascadingValue Value="MessageForGrandChildTemp" Name="Message">
     <CascadingValue Value="LuckyNumber" Name="LuckyNumber_GrandChild">
-        <_ChildComponent OnButtonClick="ShowMessage" Title="This is parametr from parent component to child">
+        <_ChildComponent @ref="_childComponentRef" OnButtonClick="ShowMessage"
+            Title="This is parametr from parent component to child">
 
             <ChildSomeContent>
                 <p>This is content from the parent using RenderFragment
@@ -22,9 +23,13 @@
 </CascadingValue>
 <p>@messageText </p>
 
-
+<div class="row">
+    <button class="btn btn-primary" @onclick="() => _childComponentRef!.ToastrSuccess()"> Toastr Success from Parent
+        Component </button>
+</div>
 
 @code {
+    private _ChildComponent? _childComponentRef;
     private string messageText = "";
     private string MessageForGrandChildTemp = "Hello from Parent Component to Grand Child Component! I learnd Cascading Parameter";
     private string LuckyNumber = "777";
@@ -32,4 +37,6 @@
     {
         messageText = "Button clicked in child component!";
     }
+
+
 }

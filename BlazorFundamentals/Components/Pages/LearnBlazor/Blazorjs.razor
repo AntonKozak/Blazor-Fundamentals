@@ -1,0 +1,74 @@
+@page "/blazorjs"
+@rendermode InteractiveServer
+@inject IJSRuntime _JSRuntime
+
+<h3>BlazorJS</h3>
+
+<div class="row">
+    <button class="btn btn-primary" @onclick="TestConfirmBox"> Test js Interop
+    </button>
+</div>
+
+<div class="row">
+    @if (hasClicked)
+    {
+        @if (ConfirmResult)
+        {
+            <p>User confirmed the action.</p>
+        }
+        else
+        {
+            <p>User did not confirm the action.</p>
+        }
+    }
+</div>
+
+<div class="row">
+    <h3>Toastr</h3>
+    <button class="btn btn-success mb-2" @onclick="ToastrSuccess"> Toastr Success </button>
+    <button class="btn btn-danger" @onclick="ToastrError"> Toastr Danger </button>
+</div>
+
+<div class="row">
+    <h3>Sweet Alert 2</h3>
+    <button class="btn btn-success mb-2" @onclick="ShowSweetAlertSuccess"> Show Sweet Success </button>
+    <button class="btn btn-warning" @onclick="ShowSweetAlertWarning"> Show Sweet Warning</button>
+</div>
+@code {
+
+    private string ConfirmMessage = "Are you sure you want to proceed?";
+    private bool ConfirmResult { get; set; }
+    private bool hasClicked { get; set; }
+
+    private async Task TestConfirmBox()
+    {
+        ConfirmResult = await _JSRuntime.InvokeAsync<bool>("confirm", ConfirmMessage);
+        hasClicked = true;
+    }
+
+    private async Task ToastrSuccess()
+    {
+        @* await _JSRuntime.InvokeVoidAsync("showToastr", "success", "Operation completed successfully!", "Success");
+         *@
+        await _JSRuntime.ToastrSuccess("Operation completed successfully!", "Success");
+    }
+
+    private async Task ToastrError()
+    {
+        @* await _JSRuntime.InvokeVoidAsync("showToastr", "error", "An error occurred!", "Error"); *@
+
+        await _JSRuntime.ToastrError("An error occurred!", "Error");
+    }
+
+    private async Task ShowSweetAlertSuccess()
+    {
+        await _JSRuntime.InvokeVoidAsync("showSwal", "success", "This is a success message.");
+    }
+
+    private async Task ShowSweetAlertWarning()
+    {
+        await _JSRuntime.InvokeVoidAsync("showSwal", "warning", "This is a warning message.");
+    }
+
+
+}
