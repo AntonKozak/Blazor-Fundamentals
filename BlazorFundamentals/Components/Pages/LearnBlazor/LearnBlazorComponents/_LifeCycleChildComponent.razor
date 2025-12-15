@@ -1,0 +1,32 @@
+<h3>_life cycle child component</h3>
+<hr />
+
+@foreach (var eventType in EventType)
+{
+    <p>@eventType</p>
+    <hr />
+}
+
+@code {
+    [Parameter]
+    public int CountValue { get; set; }
+    List<string> EventType = new List<string>();
+
+    protected override void OnInitialized()
+    {
+        EventType.Add("OnInitialized _Child Life cycle called");
+        base.OnInitialized();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(500);
+        EventType.Add("OnInitializedAsync CHILD CHILD delay ");
+    }
+
+    protected override void OnParametersSet()
+    {
+        EventType.Add("OnParametersSet CHILD CHILD called");
+        base.OnParametersSet();
+    }
+}
