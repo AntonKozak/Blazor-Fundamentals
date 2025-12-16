@@ -1,0 +1,97 @@
+@page "/learnblazor/forms"
+@rendermode InteractiveServer
+<h3>Forms </h3>
+
+
+<div class="col-12 offset-md-2 col-md-8 border">
+    <div class="text-center pt-4">
+        <h2 class="text-success">Blazor Forms Example</h2>
+        <hr />
+    </div>
+    <div class="mx-2 px-2">
+        <EditForm FormName="ProductCreate" Model="Product" onValidSubmit="HandleProductCreate"
+            OnInvalidSubmit="HandleInvalidSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div class="form-group py-2">
+                <label for="ProductName">Product Name</label>
+                <InputText class="form-control" @bind-Value="@Product.Name" />
+                <ValidationMessage For="@(() => Product.Name)" />
+            </div>
+
+            <div class="form-group py-2">
+                <label for="ProductPrice">Product Price</label>
+                <InputNumber class="form-control" @bind-Value="@Product.Price" />
+                <ValidationMessage For="@(() => Product.Price)" />
+            </div>
+
+            @* Category *@
+            <div class="form-group py-2">
+                <label for="ProductCategory">Product Category</label>
+                <InputSelect class="form-select" @bind-Value="@Product.Category">
+                    <option value="">-- Select Category --</option>
+                    @foreach (var category in Enum.GetValues(typeof(Category)))
+                    {
+                        <option value="@category">@category</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => Product.Category)" />
+            </div>
+
+            @* Available From *@
+            <div class="form-group    py-2">
+                <label for="AvailableFrom">Available From</label>
+                <InputDate class="form-control" @bind-Value="@Product.AvailableFrom" />
+                <ValidationMessage For="@(() => Product.AvailableFrom)" />
+            </div>
+
+            @* IsActive *@
+            <div class="form-group py-2">
+                <label>
+                    <InputCheckbox class="form-check-input" @bind-Value="@Product.IsActive" />
+                    Is Active
+                </label>
+            </div>
+            <button type="submit" class="btn btn-primary my-3" style="width: 200px;">Submit</button>
+            <p>@(IsProcessing ? "Processing..." : "")</p>
+        </EditForm>
+    </div>
+
+    @if (ProductCreated != null && !IsProcessing)
+    {
+        <div class="alert alert-success mt-4" role="alert">
+            <h4 class="alert-heading">Product Created Successfully!</h4>
+            <p><strong>Name:</strong> @ProductCreated.Name</p>
+            <p><strong>Price:</strong> @ProductCreated.Price</p>
+            <p><strong>Category:</strong> @ProductCreated.Category</p>
+            <p><strong>Available From:</strong> @ProductCreated.AvailableFrom</p>
+            <p><strong>Is Active:</strong> @(ProductCreated.IsActive ? "Yes" : "No")</p>
+        </div>
+    }
+</div>
+
+@code {
+    [SupplyParameterFromForm(FormName = "ProductCreate")]
+    public Product? Product { get; set; } = new Product();
+    public Product ProductCreated { get; set; } = new Product();
+    private bool IsProcessing = false;
+
+    private async Task HandleProductCreate()
+    {
+        IsProcessing = true;
+        // Simulate saving to database
+        ProductCreated = Product!;
+        Product = new Product();
+
+        await Task.Delay(2000);
+        IsProcessing = false;
+    }
+
+    private async Task HandleInvalidSubmit()
+    {
+        IsProcessing = true;
+        // Simulate saving to database
+        await Task.Delay(4000);
+        IsProcessing = false;
+    }
+}
